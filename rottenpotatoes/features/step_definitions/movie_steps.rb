@@ -29,10 +29,32 @@ When /I (un)?check the following ratings: (.*)/ do |uncheck, rating_list|
   # HINT: use String#split to split up the rating_list, then
   #   iterate over the ratings and reuse the "When I check..." or
   #   "When I uncheck..." steps in lines 89-95 of web_steps.rb
-  fail "Unimplemented"
+  ratings = rating_list.split(', ')
+  ratings.each do |rating|
+    uncheck ? uncheck("ratings[#{rating}]") : (check("ratings[#{rating}]"))
+  end
 end
 
-Then /I should see all the movies/ do
+When /^I press "(.*)" button/ do |button|
+  click_button button
+end
+
+Then /I should see the following movies: (.*)$/ do |movies_list|
+  movies = movies_list.split(', ')
+  movies.each do |movie|
+      expect(page).to have_content(movie)
+  end
+end
+
+Then /I should not see the following movies: (.*)$/ do |movies_list|
+  movies = movies_list.split(', ')
+  movies.each do |movie|
+      expect(page).to have_no_content(movie)
+  end
+
+end
+
+Then(/^I should see all movies$/) do
   # Make sure that all the movies in the app are visible in the table
-  fail "Unimplemented"
+  expect(page).to have_xpath("//tr", count: 11)
 end
