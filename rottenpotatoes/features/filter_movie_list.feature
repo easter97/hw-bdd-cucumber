@@ -40,4 +40,3 @@ Scenario: all ratings selected
   Given I am on the RottenPotatoes home page
   When I check the following ratings: G, PG, PG-13, R
   Then I should see all movies
-
